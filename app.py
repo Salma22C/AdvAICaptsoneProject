@@ -148,9 +148,20 @@ def home():
 
 @app.route("/process", methods=["POST"])
 def process():
+    """Processes incoming customer support tickets."""
 
-    user_text = request.form["email_text"]
+    # Get user input safely
+    user_text = request.form.get("email_text", "").strip()
 
+    # Handle empty submissions
+    if not user_text:
+        return render_template_string(
+            HTML_TEMPLATE,
+            intent="Error",
+            response="Please enter a valid customer support ticket."
+        )
+
+    # Tokenize the input
     inputs = tokenizer(
         user_text,
         return_tensors="tf",
@@ -159,10 +170,11 @@ def process():
         max_length=64
     )
 
+    # Run BERT classification
     outputs = model(inputs)
-
     prediction = tf.argmax(outputs.logits, axis=-1).numpy()[0]
 
+    # Ticket categories
     labels = {
         0: "Urgent Complaint",
         1: "Feature Suggestion",
@@ -171,6 +183,7 @@ def process():
 
     category = labels[prediction]
 
+    # Prompt templates for the LLM
     prompts = {
         0: "You are an urgent customer support assistant. Draft a short escalation note.",
         1: "You are a product manager. Summarize the feature request.",
@@ -188,12 +201,14 @@ def process():
         }
     ]
 
+    # Build chat prompt
     prompt = generation_pipeline.tokenizer.apply_chat_template(
         messages,
         tokenize=False,
         add_generation_prompt=True
     )
 
+    # Generate response
     result = generation_pipeline(
         prompt,
         max_new_tokens=120,
@@ -201,9 +216,13 @@ def process():
         do_sample=True,
     )
 
-    response = result[0]["generated_text"].split(
-        "<|im_start|>assistant\n"
-    )[-1].strip()
+    generated_text = result[0]["generated_text"]
+
+    # Remove chat template if present
+    if "<|im_start|>assistant\n" in generated_text:
+        response = generated_text.split("<|im_start|>assistant\n")[-1].strip()
+    else:
+        response = generated_text.strip()
 
     return render_template_string(
         HTML_TEMPLATE,
