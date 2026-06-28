@@ -1,8 +1,8 @@
-# 🏢 Intelligent Support Router 
+# 🏢 Intelligent Support Router & Triage
 
 An end-to-end NLP application that automatically classifies incoming customer support tickets using a fine-tuned **BERT** model built with **TensorFlow** and **Hugging Face Transformers**.
 
-The system routes customer tickets into predefined categories, generates an initial draft response, and deploys the solution through a Flask web application.
+The system routes customer tickets into predefined categories, generates an initial AI draft response using a generative language model, and deploys the solution through a Flask web application.
 
 ---
 
@@ -14,7 +14,7 @@ This project automates the process by:
 
 - 📩 Understanding customer support messages
 - 🤖 Classifying tickets using a fine-tuned BERT model
-- 💬 Generating an initial draft response
+- 💬 Generating an initial AI draft response
 - 🌐 Deploying the application through Flask with temporary public access using ngrok
 
 ---
@@ -30,7 +30,7 @@ git clone https://github.com/Salma22C/Intelligent-Support-Router.git
 ## Navigate to the project folder
 
 ```bash
-cd "C:\Users\salma\OneDrive\Documents\Adv AI Capstone Project"
+cd Intelligent-Support-Router
 ```
 
 ## Install dependencies
@@ -47,7 +47,7 @@ jupyter notebook
 
 Open the project notebook and run all cells sequentially.
 
-> **Note:** The Flask application is demonstrated using Google Colab with ngrok. The generated ngrok URL is temporary and remains active only while the Colab runtime is running.
+> **Note:** The Flask application is demonstrated using Google Colab together with ngrok. The generated ngrok URL is temporary and remains active only while the Colab runtime is running.
 
 ---
 
@@ -72,12 +72,12 @@ Open the project notebook and run all cells sequentially.
 - Fine-Tuned BERT Model
 - TensorFlow Implementation
 - Hugging Face Transformers
-- Automated Response Generation
+- AI Draft Response Generation
 - Flask Web Application
 - Temporary Public Access via ngrok
 - Classification Report
 - Confusion Matrix
-- Stress Testing
+- Manual Stress Testing
 
 ---
 
@@ -114,7 +114,7 @@ Classification Head
 Predicted Category
         │
         ▼
-Rule-Based Response Generator
+Generative LLM Response Drafting
         │
         ▼
 Display Results
@@ -168,7 +168,7 @@ Deploy with Flask
 
 ### Observation
 
-The dataset was balanced but too small for effective BERT fine-tuning. The classifier frequently predicted the **General Inquiry** class.
+The dataset was balanced but too small for effective BERT fine-tuning. The classifier frequently predicted the **General Inquiry** category.
 
 ---
 
@@ -184,35 +184,35 @@ The dataset was balanced but too small for effective BERT fine-tuning. The class
 
 ### Result
 
-Expanding the balanced dataset significantly improved the model's ability to distinguish between the three ticket categories during manual stress testing.
+Expanding the balanced dataset improved the model's ability to distinguish between the three ticket categories during manual stress testing.
 
 ---
 
 # ⚙️ Tech Stack
 
-### Programming
+## Programming
 
 - Python
 
-### Deep Learning
+## Deep Learning
 
 - TensorFlow
 
-### NLP
+## NLP
 
 - Hugging Face Transformers
 - BERT (Encoder-only Transformer)
 
-### Machine Learning
+## Machine Learning
 
 - Scikit-learn
 
-### Data Processing
+## Data Processing
 
 - Pandas
 - NumPy
 
-### Deployment
+## Deployment
 
 - Flask
 - ngrok
@@ -229,6 +229,8 @@ The model was evaluated using:
 - F1-score
 - Confusion Matrix
 
+The evaluation was performed on the available labeled dataset, followed by manual stress testing using representative customer support scenarios.
+
 ---
 
 # 🌐 Web Application
@@ -237,9 +239,9 @@ Application workflow:
 
 1. User submits a customer support ticket.
 2. Hugging Face AutoTokenizer tokenizes the input.
-3. Fine-tuned BERT predicts the ticket category.
-4. A rule-based response generator creates an initial draft response.
-5. Results are displayed through the Flask interface.
+3. The fine-tuned BERT model predicts the ticket category.
+4. A generative language model creates an initial draft response based on the predicted category.
+5. The predicted category and generated response are displayed through the Flask interface.
 
 ---
 
@@ -247,13 +249,13 @@ Application workflow:
 
 After expanding the dataset from **18** to **90** balanced samples, multiple representative customer support scenarios were manually tested.
 
-The deployed application successfully classified:
+The application successfully classified:
 
 - ✅ Urgent Complaint
 - ✅ Feature Suggestion
 - ✅ General Inquiry
 
-and generated category-specific draft responses through the Flask interface.
+and generated category-specific AI draft responses through the Flask interface.
 
 ---
 
@@ -262,7 +264,7 @@ and generated category-specific draft responses through the Flask interface.
 During development, several real-world engineering challenges were encountered and resolved:
 
 - TensorFlow dependency conflicts
-- Transformers version compatibility
+- Hugging Face Transformers version compatibility
 - ngrok authentication and deployment
 - Flask routing configuration
 - Secure secret management using Google Colab Secrets
@@ -275,6 +277,7 @@ During development, several real-world engineering challenges were encountered a
 - Fine-tuning pretrained BERT models with TensorFlow
 - Building NLP pipelines using Hugging Face Transformers
 - Applying transfer learning for text classification
+- Integrating a generative language model for response drafting
 - Deploying AI applications with Flask
 - Securely exposing local applications using ngrok
 - Managing Python package dependencies
